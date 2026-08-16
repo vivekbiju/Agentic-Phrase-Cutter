@@ -1,0 +1,25 @@
+# Python / Virtual Environment
+venv/
+env/
+__pycache__/
+*.pyç
+*.pyo
+.pytest_cache/
+
+# Agent State & Memory (Keep code clean of local run history)
+state/memory.json
+logs/
+
+# Video Outputs & Temporary Media
+outputs/
+*.mp4
+*.mov
+
+# If you store sample case media locally and don't want to bloat the repo, 
+# you can ignore them or keep only what's necessary:
+# data/sample_case_1/*.mp4
+# data/sample_case_2/*.mp4
+
+# OS Files
+.DS_Store
+Thumbs.db

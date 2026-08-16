@@ -1,0 +1,58 @@
+{
+    "words": [
+        {
+            "word": "Hi",
+            "start": 0.10,
+            "end": 0.35,
+            "confidence": 0.98
+        },
+        {
+            "word": "everyone,",
+            "start": 0.40,
+            "end": 0.90,
+            "confidence": 0.95
+        },
+        {
+            "word": "um...",
+            "start": 0.95,
+            "end": 1.45,
+            "confidence": 0.70
+        },
+        {
+            "word": "I",
+            "start": 1.80,
+            "end": 1.95,
+            "confidence": 0.96
+        },
+        {
+            "word": "think",
+            "start": 2.00,
+            "end": 2.30,
+            "confidence": 0.94
+        },
+        {
+            "word": "we",
+            "start": 2.35,
+            "end": 2.50,
+            "confidence": 0.97
+        },
+        {
+            "word": "should",
+            "start": 2.55,
+            "end": 2.85,
+            "confidence": 0.95
+        },
+        {
+            "word": "wait",
+            "start": 2.90,
+            "end": 3.25,
+            "confidence": 0.92
+        },
+        {
+            "word": "here.",
+            "start": 3.30,
+            "end": 3.70,
+            "confidence": 0.96
+        }
+    ]
+}

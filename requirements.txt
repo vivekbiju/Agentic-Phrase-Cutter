@@ -1,0 +1,4 @@
+openai-whisper>=20231117
+torch>=2.0.0
+moviepy>=1.0.3
+pytest>=7.4.0

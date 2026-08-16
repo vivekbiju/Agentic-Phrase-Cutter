@@ -1,0 +1,46 @@
+{
+    "words": [
+        {
+            "word": "We",
+            "start": 1.50,
+            "end": 1.70,
+            "confidence": 0.95
+        },
+        {
+            "word": "cant",
+            "start": 1.75,
+            "end": 2.31,
+            "confidence": 0.95
+        },
+        {
+            "word": "stop",
+            "start": 2.32,
+            "end": 2.61,
+            "confidence": 0.96
+        },
+        {
+            "word": "here.",
+            "start": 2.62,
+            "end": 2.95,
+            "confidence": 0.95
+        },
+        {
+            "word": "This",
+            "start": 3.10,
+            "end": 3.30,
+            "confidence": 0.97
+        },
+        {
+            "word": "is",
+            "start": 3.35,
+            "end": 3.50,
+            "confidence": 0.98
+        },
+        {
+            "word": "backcountry",
+            "start": 3.55,
+            "end": 4.10,
+            "confidence": 0.94
+        }
+    ]
+}
