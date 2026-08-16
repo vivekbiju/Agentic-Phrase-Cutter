@@ -93,6 +93,7 @@ sudo apt update && sudo apt install -y ffmpeg
 
 # Windows (via winget)
 winget install ffmpeg
+```
 ---
 
 ## 🚀 Running the Agent & Web UI
@@ -142,6 +143,3 @@ If given more time to scale this system into a full production microservice, I w
 1. **Active Learning Feedback Loop:** Allow user corrections on clipped boundaries to dynamically fine-tune the agent's confidence weights and fuzzy-matching thresholds over time.
 2. **Multi-Model Ensemble Support:** Integrate parallel STT engines (such as Whisper variants alongside local LLM speech models) to cross-verify timing confidence via consensus voting.
 
-```
-
-```
