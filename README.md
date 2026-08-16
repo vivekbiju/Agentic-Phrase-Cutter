@@ -1,77 +1,119 @@
-# Stateful Phrase Cutter Agent
+# Stateful Phrase Cutter Agent 🎬🤖
 
-An intelligent, stateful video editing agent that ingests video files, transcripts, and word-level speech-to-text timing data (via Whisper), reconciles discrepancies between them, and cuts precise video clips based on a requested phrase.
-
-## Features
-
-* **Multi-Source Reconciliation:** Reconciles disagreements between transcript tokens and STT timing data (handling contractions, punctuation, filler words, and speech rate variations).
-* **Auditable Structured Logging:** Records conflict detection, boundary decisions, confidence scores, and reasoning into structured JSON logs.
-* **Stateful Learning:** Maintains agent memory across queries (`memory.json`) to learn from user corrections and adjust boundary padding dynamically.
-* **CLI Interface:** Simple, robust command-line interface for running cuts and applying corrections.
+An intelligent, auditable, and stateful multi-source alignment agent designed to reconcile discrepancies between speech-to-text transcripts and word-level timing data, producing precise video clip isolations. Built for rigorous AI engineering evaluation.
 
 ---
 
-## Project Structure
+## 🚀 Overview & Architecture
+
+Standard video-cutting pipelines rely on naive string matching against timestamps, which frequently fails due to audio drift, punctuation handling, conversational filler words, and token fragmentation (such as contractions splitting across timing boundaries).
+
+This agent treats **alignment conflict as a first-class citizen** by implementing a robust multi-layer architecture:
+
+1. **Ingestion & Normalization Layer:** Automatically ingests video files, transcripts, and word-level timing streams via OpenAI Whisper with timestamp outputs, normalizing token structures and handling sub-token fragmentation.
+2. **Conflict Arbitration & Drift Detection Engine:** Detects discrepancies between semantic text sources and granular timing edges, applying dynamic confidence scoring and defensive fallback policies.
+3. **Auditable Reasoning Logger:** Automatically records structured decisions (e.g., *"timing data trusted for precise word edges; transcript semantic match validated"*) into persistent JSON logs.
+4. **Developer-First CLI Visualizer:** Renders an ASCII timeline, confidence breakdown, and execution summary directly in the terminal for instant observability.
+
+---
+
+## 🛠️ Project Structure
 
 ```text
 phrase_cutter_agent/
-│
 ├── app/
-│   ├── __init__.py      # Package initializer
-│   ├── agent.py         # Core agent orchestration & state management
-│   ├── align.py         # Subsequence alignment & conflict resolution logic
-│   ├── cutter.py        # Video cutting & FFmpeg processing module
-│   ├── main.py          # CLI entry point
-│   ├── memory.py        # Persistent state & memory management
-│   ├── normalize.py     # Tokenization, contraction & punctuation normalization
-│   ├── schemas.py       # Data models and structures
-│   ├── transcribe.py    # Whisper transcription & word-level timing wrapper
-│   └── utils.py         # Helper utilities
-│
-├── data/                # Sample input data and test cases
-├── outputs/             # Generated video clips (.mp4)
-├── logs/                # Structured JSON audit logs
-├── state/               # Agent memory and correction history
+│   ├── agent.py         # Core agent decision engine & state management
+│   ├── main.py          # CLI interface and command router
+│   ├── normalize.py     # Token normalization & fuzzy anchoring logic
+│   ├── transcribe.py    # Whisper integration for word-level timings
+│   └── visualization.py # Terminal ASCII timeline & execution summary tables
+├── data/
+│   ├── sample_case_1/   # Filler word / conversational test case
+│   └── sample_case_2/   # Split contraction edge case ("can't stop")
+├── logs/                # Auditable structured JSON decision logs
+├── outputs/             # Generated isolated MP4 clips
 ├── requirements.txt     # Project dependencies
-└── README.md
+└── README.md            # Comprehensive documentation
+
 ```
+
 ---
-## Setup & Installation
-1. **Clone the repository:**
 
-```Bash
-git clone [https://github.com/Aswathi846/phrase-cutter-agent.git](https://github.com/Aswathi846/phrase-cutter-agent.git)
-cd phrase-cutter-agent
+## ⚙️ Installation & Setup
+
+1. **Clone the Repository:**
+```bash
+git clone https://github.com/vivekbiju/Agentic-Phrase-Cutter.git
+cd Agentic-Phrase-Cutter
+
 ```
-2. **Create and activate a virtual environment:**
 
-```Bash
+
+2. **Create and Activate a Virtual Environment:**
+```bash
 python -m venv venv
-## On Windows:
+# On Windows:
 venv\Scripts\activate
-## On macOS/Linux:
+# On macOS/Linux:
 source venv/bin/activate
-```
-3. **Install dependencies:**
 
-```Bash
+```
+
+
+3. **Install Dependencies:**
+```bash
 pip install -r requirements.txt
-```
----
-## How to Run
-To cut a specific phrase from a video file:
 
-```Bash
+```
+
+
+
+---
+
+## 🚀 Running the Agent
+
+You can invoke the agent via the command line to process video files and isolate targeted phrases.
+
+### Test Case 1: Filler Word Filtering
+
+```bash
+python -m app.main cut --video data/sample_case_1/filler.mp4 --phrase "I think we should wait here"
+
+```
+
+### Test Case 2: Split Contraction Edge Case (`"can't stop"`)
+
+```bash
 python -m app.main cut --video data/sample_case_2/contraction.mp4 --phrase "can't stop"
+
 ```
-To apply a correction adjustment based on boundary performance:
-```Bash
-python -m app.main correct --phrase "can't stop" --issue "start too late" --adjustment-ms 150
-```
+
 ---
-## What I Would Do Next With More Time
-1. **Web UI Integration:** Build a Streamlit or FastAPI web interface allowing users to upload videos, view aligned transcripts interactively, and preview cuts in real time.
 
-2. **Multi-Model STT Support:** Expand ingestion to support alternative speech-to-text providers (such as OpenAI API, Deepgram, or local Vosk models) with pluggable adapters.
+## 🧪 Handling Hard Edge Cases
 
-3. **Advanced Visual Boundary Detection:** Incorporate visual silence or shot-change detection alongside audio word boundaries to make transition cuts look even cleaner.
+This agent was specifically engineered to solve the most difficult alignment failure modes:
+
+* **Contraction Splitting Across Timing Boundaries:** When Whisper splits a word like `"can't"` into separate tokens (`[ ca ]` and `[ n't ]`), the normalization module bridges sub-token intervals securely.
+* **Conversational Filler Words:** Dynamically filters out filler utterances (e.g., `"um..."`) present in timing data but omitted from clean transcripts.
+* **Speech Rate Drift:** Detects duration anomalies across variable tempos and triggers defensive fallback arbitration policies.
+
+---
+
+## 📋 Auditing & Transparency
+
+Every execution automatically generates a structured JSON log inside the `logs/` directory. These logs capture:
+
+* Source conflict types and arbitration outcomes.
+* Granular confidence scores and timestamp bounds.
+* Auditable human-readable reasoning strings.
+
+---
+
+## 🔮 Future Improvements (With More Time)
+
+If given more time to scale this system into a full production microservice, I would implement:
+
+1. **Web-Based UI (Streamlit/FastAPI):** Expose an interactive visual timeline editor where users can manually override conflict arbitrations and preview cuts in real-time.
+2. **Active Learning Feedback Loop:** Allow user corrections on clipped boundaries to dynamically fine-tune the agent's confidence weights and fuzzy-matching thresholds over time.
+3. **Multi-Model Ensemble Support:** Integrate parallel STT engines (such as Whisper variants alongside local LLM speech models) to cross-verify timing confidence via consensus voting.
