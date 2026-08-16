@@ -80,7 +80,19 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 ```
+### Prerequisites
 
+This project relies on **FFmpeg** for video extraction and rendering. Ensure FFmpeg is installed on your system path before running the CLI:
+
+```bash
+# macOS
+brew install ffmpeg
+
+# Ubuntu/Debian
+sudo apt update && sudo apt install -y ffmpeg
+
+# Windows (via winget)
+winget install ffmpeg
 ---
 
 ## 🚀 Running the Agent & Web UI
