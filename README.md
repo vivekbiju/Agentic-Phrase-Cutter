@@ -11,9 +11,9 @@ Standard video-cutting pipelines rely on naive string matching against timestamp
 This agent treats **alignment conflict as a first-class citizen** by implementing a robust multi-layer architecture:
 
 1. **Ingestion & Normalization Layer:** Automatically ingests video files, transcripts, and word-level timing streams via OpenAI Whisper with timestamp outputs, normalizing token structures and handling sub-token fragmentation.
-2. **Conflict Arbitration & Drift Detection Engine:** Detects discrepancies between semantic text sources and granular timing edges, applying dynamic confidence scoring and defensive fallback policies.
-3. **Auditable Reasoning Logger:** Automatically records structured decisions (e.g., *"timing data trusted for precise word edges; transcript semantic match validated"*) into persistent JSON logs.
-4. **Developer-First CLI Visualizer:** Renders an ASCII timeline, confidence breakdown, and execution summary directly in the terminal for instant observability.
+2. **Conflict Arbitration & Drift Detection Engine:** Detects discrepancies between semantic text sources and granular timing edges, applying dynamic confidence scoring, empty slice protection, and defensive fallback policies.
+3. **Auditable Reasoning Logger:** Automatically records structured decisions (e.g., *"timing data trusted for precise word edges; transcript semantic match validated"*) into persistent JSON logs with robust filesystem-safe sanitization.
+4. **Developer-First CLI & Interactive Web UI:** Renders an ASCII timeline and execution summary in the terminal, alongside a **Streamlit Web Interface** for visual phrase cutting and playback.
 
 ---
 
@@ -30,6 +30,7 @@ Agentic_Phrase_Cutter/
 │   ├── memory.py        # Stateful persistence & agent learning memory
 │   ├── normalize.py     # Token normalization & fuzzy anchoring logic
 │   ├── schemas.py       # Pydantic data models & structured log definitions
+│   ├── streamlit_app.py # Interactive Streamlit web user interface
 │   ├── transcribe.py    # Whisper integration for word-level timings
 │   ├── utils.py         # Helper utilities and logging configuration
 │   └── visualization.py # Terminal ASCII timeline & execution summary tables
@@ -47,6 +48,7 @@ Agentic_Phrase_Cutter/
 ├── state/               # Persistent state and memory storage (memory.json)
 ├── requirements.txt     # Project dependencies
 └── README.md            # Comprehensive documentation
+
 ```
 
 ---
@@ -54,14 +56,15 @@ Agentic_Phrase_Cutter/
 ## ⚙️ Installation & Setup
 
 1. **Clone the Repository:**
+
 ```bash
-git clone https://github.com/vivekbiju/Agentic-Phrase-Cutter.git
+git clone [https://github.com/vivekbiju/Agentic-Phrase-Cutter.git](https://github.com/vivekbiju/Agentic-Phrase-Cutter.git)
 cd Agentic-Phrase-Cutter
 
 ```
 
-
 2. **Create and Activate a Virtual Environment:**
+
 ```bash
 python -m venv venv
 # On Windows:
@@ -71,32 +74,30 @@ source venv/bin/activate
 
 ```
 
-
 3. **Install Dependencies:**
+
 ```bash
 pip install -r requirements.txt
 
 ```
 
-
-
 ---
 
-## 🚀 Running the Agent
+## 🚀 Running the Agent & Web UI
 
-You can invoke the agent via the command line to process video files and isolate targeted phrases.
+You can interact with the agent via the command line or launch the interactive Streamlit web application.
 
-### Test Case 1: Filler Word Filtering
+### Option A: Launch Streamlit Web UI
 
 ```bash
-python -m app.main cut --video data/sample_case_1/filler.mp4 --phrase "I think we should wait here"
+streamlit run app/streamlit_app.py
 
 ```
 
-### Test Case 2: Split Contraction Edge Case (`"can't stop"`)
+### Option B: Command Line Interface (CLI)
 
 ```bash
-python -m app.main cut --video data/sample_case_2/contraction.mp4 --phrase "can't stop"
+python -m app.main cut --video data/sample_case_1/filler.mp4 --phrase "I think we should wait here"
 
 ```
 
@@ -108,13 +109,13 @@ This agent was specifically engineered to solve the most difficult alignment fai
 
 * **Contraction Splitting Across Timing Boundaries:** When Whisper splits a word like `"can't"` into separate tokens (`[ ca ]` and `[ n't ]`), the normalization module bridges sub-token intervals securely.
 * **Conversational Filler Words:** Dynamically filters out filler utterances (e.g., `"um..."`) present in timing data but omitted from clean transcripts.
-* **Speech Rate Drift:** Detects duration anomalies across variable tempos and triggers defensive fallback arbitration policies.
+* **Speech Rate Drift & Empty Slices:** Detects duration anomalies across variable tempos and protects against empty timing boundary states through fallback arbitration policies.
 
 ---
 
 ## 📋 Auditing & Transparency
 
-Every execution automatically generates a structured JSON log inside the `logs/` directory. These logs capture:
+Every execution automatically generates a structured JSON log inside the `logs/` directory using robust filesystem-safe name slugification. These logs capture:
 
 * Source conflict types and arbitration outcomes.
 * Granular confidence scores and timestamp bounds.
@@ -126,6 +127,9 @@ Every execution automatically generates a structured JSON log inside the `logs/`
 
 If given more time to scale this system into a full production microservice, I would implement:
 
-1. **Web-Based UI (Streamlit/FastAPI):** Expose an interactive visual timeline editor where users can manually override conflict arbitrations and preview cuts in real-time.
-2. **Active Learning Feedback Loop:** Allow user corrections on clipped boundaries to dynamically fine-tune the agent's confidence weights and fuzzy-matching thresholds over time.
-3. **Multi-Model Ensemble Support:** Integrate parallel STT engines (such as Whisper variants alongside local LLM speech models) to cross-verify timing confidence via consensus voting.
+1. **Active Learning Feedback Loop:** Allow user corrections on clipped boundaries to dynamically fine-tune the agent's confidence weights and fuzzy-matching thresholds over time.
+2. **Multi-Model Ensemble Support:** Integrate parallel STT engines (such as Whisper variants alongside local LLM speech models) to cross-verify timing confidence via consensus voting.
+
+```
+
+```
