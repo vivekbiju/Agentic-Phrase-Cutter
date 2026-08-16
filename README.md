@@ -20,21 +20,33 @@ This agent treats **alignment conflict as a first-class citizen** by implementin
 ## 🛠️ Project Structure
 
 ```text
-phrase_cutter_agent/
+Agentic_Phrase_Cutter/
 ├── app/
-│   ├── agent.py         # Core agent decision engine & state management
+│   ├── __init__.py      # Package initializer
+│   ├── agent.py         # Core agent decision engine & workflow orchestration
+│   ├── align.py         # Transcript and timing multi-source alignment logic
+│   ├── cutter.py        # Video frame extraction and cutting engine
 │   ├── main.py          # CLI interface and command router
+│   ├── memory.py        # Stateful persistence & agent learning memory
 │   ├── normalize.py     # Token normalization & fuzzy anchoring logic
+│   ├── schemas.py       # Pydantic data models & structured log definitions
 │   ├── transcribe.py    # Whisper integration for word-level timings
+│   ├── utils.py         # Helper utilities and logging configuration
 │   └── visualization.py # Terminal ASCII timeline & execution summary tables
 ├── data/
 │   ├── sample_case_1/   # Filler word / conversational test case
+│   │   ├── filler.mp4   # Source video containing filler utterances ("um...")
+│   │   ├── timings.json # Word-level timestamp data from Whisper
+│   │   └── transcript.json # Clean text transcript
 │   └── sample_case_2/   # Split contraction edge case ("can't stop")
+│       ├── contraction.mp4 # Source video featuring contraction boundaries
+│       ├── timings.json # Token-split timing metadata ([ca], [n't])
+│       └── transcript.json # Semantic transcript text
 ├── logs/                # Auditable structured JSON decision logs
 ├── outputs/             # Generated isolated MP4 clips
+├── state/               # Persistent state and memory storage (memory.json)
 ├── requirements.txt     # Project dependencies
 └── README.md            # Comprehensive documentation
-
 ```
 
 ---
