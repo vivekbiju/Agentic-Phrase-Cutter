@@ -2,6 +2,8 @@
 
 An intelligent, auditable, and stateful multi-source alignment agent designed to reconcile discrepancies between speech-to-text transcripts and word-level timing data, producing precise video clip isolations. Built for rigorous AI engineering evaluation.
 
+<img width="1452" height="826" alt="Screenshot_17-8-2026_18922_localhost" src="https://github.com/user-attachments/assets/aa3082fc-045c-4436-9d5d-c8c59f14d36d" />
+
 ---
 
 ## 🚀 Overview & Architecture
